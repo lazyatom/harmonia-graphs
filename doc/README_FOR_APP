@@ -1,0 +1,1 @@
+Very simple and unreliable graphing app.  Requires a batsd server to be running, and the environment variable STATSD_NAMESPACE to be set.

@@ -1,0 +1,43 @@
+<script>
+(function() {
+  var mean_data = [ <%= graph.mean.map(&:to_js).join(", ") %> ]
+  var max_data = [ <%= graph.max.map(&:to_js).join(", ") %> ]
+
+  var graph = new Rickshaw.Graph( {
+    element: document.querySelector("<%= div %>"),
+    renderer: 'line',
+    stroke: true,
+    interpolation: 'linear',
+    series: [ {
+      color: 'rgba(96,170,255,0.2)',
+      data: mean_data,
+      name: 'Mean'
+    },
+    {
+      color: 'rgba(255,96,96,0.2)',
+      data: max_data,
+      name: 'Max'
+    } ]
+  } );
+
+  graph.renderer.unstack = true;
+  graph.render();
+
+  var xAxis = new Rickshaw.Graph.Axis.Time({
+    graph: graph
+  });
+
+  xAxis.render();
+
+  var yAxis = new Rickshaw.Graph.Axis.Y({
+    graph: graph,
+    tickFormat: Rickshaw.Fixtures.Number.formatKMBT
+  });
+
+  yAxis.render();
+
+  var hoverDetail = new Rickshaw.Graph.HoverDetail( {
+    graph: graph
+  });
+})();
+</script>
