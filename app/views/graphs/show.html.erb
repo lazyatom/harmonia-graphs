@@ -6,12 +6,12 @@
 
 <% unless @request_time_week.empty? %>
 <h2>Request time over last month</h2>
-<div id="request-time-day"></div>
-<%= render partial: 'timeline_graph', locals: {graph: @request_time_week, div: '#request-time-day'} %>
+<div id="request-time-week"></div>
+<%= render partial: 'timeline_graph', locals: {graph: @request_time_week, div: '#request-time-week'} %>
 <% end %>
 
 <% unless @request_time_year.empty? %>
 <h2>Request time over last year</h2>
-<div id="request-time-day"></div>
-<%= render partial: 'timeline_graph', locals: {graph: @request_time_year, div: '#request-time-day'} %>
+<div id="request-time-year"></div>
+<%= render partial: 'timeline_graph', locals: {graph: @request_time_year, div: '#request-time-year'} %>
 <% end %>
