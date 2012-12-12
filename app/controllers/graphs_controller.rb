@@ -1,6 +1,8 @@
 require 'batsd_client'
 
 class GraphsController < ApplicationController
+  before_filter :hide_from_public
+
   def show
     @request_time_day = TimingGraph.new('request-time', 1.day.ago)
     @request_time_week = TimingGraph.new('request-time', 1.week.ago)
@@ -9,8 +11,8 @@ class GraphsController < ApplicationController
 
   private
 
-  def client
-    @client ||= BatsdClient.new
+  def hide_from_public
+    authenticate_or_request_with_http_basic { |_, p| p == ENV["HTTP_PASSWORD"] || 'hard-to-guess' }
   end
 
   class TimingGraph
@@ -26,7 +28,8 @@ class GraphsController < ApplicationController
 
     [:max, :mean].each do |stat|
       define_method stat do
-        @client.values(@name + ":#{stat}", @period).map {|measure| TimingData.new(measure) }
+        values = @client.values(@name + ":#{stat}", @period) rescue []
+        values.map {|measure| TimingData.new(measure) }
       end
     end
 
